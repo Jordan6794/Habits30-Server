@@ -19,7 +19,6 @@ app.get('/', (req, res) => {
     res.send('Hello from habit backend')
 })
 
-// const CONNECTION_URL = 'mongodb+srv://masterDB:mongo1994@cluster0.nltrr.mongodb.net/habitsDatabase?retryWrites=true&w=majority'
 const PORT = process.env.PORT || 5000
 
 mongoose.connect(process.env.CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})

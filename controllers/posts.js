@@ -13,6 +13,7 @@ export const getHabbits = async (req, res) => {
 export const createHabbit = async (req, res) => {
 	try {
 		const habitInfos = req.body
+		console.log(habitInfos)
 		const habitTest = new Habit(habitInfos)
 		await habitTest.save()
 
@@ -37,36 +38,11 @@ export const updateHabit = async (req, res) => {
 		console.log('habitInfos on server : ', habitInfos)
 
 		const updatedHabit = await Habit.findByIdAndUpdate(
-			id,
-			{$set: {name: 'new name'}}, //this one works
-			// {$set: {"colors.$[0]": 'r'}},
-			// { $push: { colors: 'r' } },
-			// { $push: { colors: { '$each': [ 'web development' ] } } },
-			// { $addToSet: { colors: ['r'] } },
+			id, habitInfos,
 			{
 				new: true,
 			}
 		)
-
-		// await Habit.updateOne(
-		// 	{ "_id" : id}, 
-		// 	{ "$set": { "name": "r" }}, 
-		// 	function(err, habit) {
-		// 	  console.log(habit)
-		//   })
-
-		// const updateArray = await Habit.updateOne(
-		// 	{ _id: id },
-		// 	{ $addToSet: { colors: ['r', 'r'] } }, function(err, result) {
-		// 		if(err){
-		// 			console.log('in err')
-		// 			res.json(err)
-		// 		} else {
-		// 			console.log('in result')
-		// 			res.json(result)
-		// 		}
-		// 	}
-		// )
 
 		res.json(updatedHabit)
 	} catch (error) {
