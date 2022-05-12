@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 
 const habitSchema = new mongoose.Schema({
-    name: String,
-    _id: String,
-    colors: Array
+	name: { type: String, required: true },
+	_id: { type: String, required: true },
+	colors: { type: Array, required: true },
 })
 
 const Habit = mongoose.model('Habit', habitSchema)
