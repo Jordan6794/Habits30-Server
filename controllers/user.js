@@ -52,6 +52,9 @@ export const signup = async (req, res) => {
 				_id: '6bf09b5e-d452-448b-b936-95c68a2fda9a',
 				name: 'Example 1 : Brush my teeth',
 				colors: ['g', 'r', 'g'],
+				successCounter: 0,
+				failCounter: 0,
+				previousArrays: []
 			}
 			const habitExample2 = {
 				_id: '6bf09b5e-d455-448b-b936-95c68a2fda9a',
