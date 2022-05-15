@@ -50,16 +50,19 @@ export const signup = async (req, res) => {
 
 			const habitExample1 = {
 				_id: '6bf09b5e-d452-448b-b936-95c68a2fda9a',
-				name: 'Example 1 : Brush my teeth',
+				name: 'Example 1 : Meditate 5 minutes',
 				colors: ['g', 'r', 'g'],
-				successCounter: 0,
-				failCounter: 0,
+				successCounter: 2,
+				failCounter: 1,
 				previousArrays: []
 			}
 			const habitExample2 = {
 				_id: '6bf09b5e-d455-448b-b936-95c68a2fda9a',
 				name: 'Example 2 : Eat one fruit today',
 				colors: ['g', 'g', 'r', 'g'],
+				successCounter: 3,
+				failCounter: 1,
+				previousArrays: []
 			}
 
 			const result = await User.create({
