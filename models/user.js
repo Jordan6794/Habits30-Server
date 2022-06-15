@@ -4,7 +4,6 @@ const UserSchema = new mongoose.Schema({
     username: String,
     password: String,
     habits: Array,
-    finished_habits: Array
 })
 
 const User = mongoose.model('User', UserSchema)

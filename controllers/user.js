@@ -69,7 +69,6 @@ export const signup = async (req, res) => {
 				username,
 				password: hash,
 				habits: [habitExample1, habitExample2],
-				finished_habits: []
 			})
 
 			const token = jwt.sign(
