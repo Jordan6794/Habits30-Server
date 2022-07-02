@@ -3,9 +3,9 @@ import jwt from 'jsonwebtoken'
 import User from '../models/user.js'
 
 export const signin = async (req, res) => {
-	const { username, password } = req.body
+	const { email, password } = req.body
 	try {
-		const existingUser = await User.findOne({ username })
+		const existingUser = await User.findOne({ email })
 		if (!existingUser) {
 			return res.status(404).json({ message: 'No user with this username' })
 		}
@@ -19,7 +19,7 @@ export const signin = async (req, res) => {
 		}
 
 		const token = jwt.sign(
-			{ username: existingUser.username, id: existingUser._id },
+			{ email: existingUser.email ,username: existingUser.username, id: existingUser._id },
 			process.env.SECRET_KEY,
 			{ expiresIn: '10d' }
 		)
@@ -31,12 +31,12 @@ export const signin = async (req, res) => {
 }
 
 export const signup = async (req, res) => {
-	const { username, password, repeatPassword } = req.body
+	const { email, username, password, repeatPassword } = req.body
 
 	try {
-		const existingUser = await User.findOne({ username })
+		const existingUser = await User.findOne({ email })
 		if (existingUser) {
-			return res.status(400).json({ message: 'User already exists.' })
+			return res.status(400).json({ message: 'There is already a user with this email.' })
 		}
 
 		if (password !== repeatPassword) {
@@ -66,13 +66,14 @@ export const signup = async (req, res) => {
 			}
 
 			const result = await User.create({
+				email,
 				username,
 				password: hash,
 				habits: [habitExample1, habitExample2],
 			})
 
 			const token = jwt.sign(
-				{ username: result.username, id: result._id },
+				{ email: result.email, username: result.username, id: result._id },
 				process.env.SECRET_KEY,
 				{ expiresIn: '10d' }
 			)
