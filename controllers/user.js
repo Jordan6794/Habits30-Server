@@ -67,11 +67,21 @@ export const signup = async (req, res) => {
 				historyStep: 0
 			}
 
+			const habitExample3 = {
+				_id: '6bf09b5e-d455-449b-b936-95c68a2fda9a',
+				name: 'Example 3 : Read 15 minutes',
+				colors: ['g'],
+				successCounter: 1,
+				failCounter: 0,
+				history: [],
+				historyStep: 0
+			}
+
 			const result = await User.create({
 				email,
 				username,
 				password: hash,
-				habits: [habitExample1, habitExample2],
+				habits: [habitExample1, habitExample2, habitExample3],
 			})
 
 			const token = jwt.sign(
