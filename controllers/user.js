@@ -60,8 +60,8 @@ export const signup = async (req, res) => {
 			const habitExample2 = {
 				_id: '6bf09b5e-d455-448b-b936-95c68a2fda9a',
 				name: 'Example 2 : Eat one fruit today',
-				colors: ['g', 'g', 'r', 'g'],
-				successCounter: 3,
+				colors: ['g', 'g', 'r', 'g', 'g'],
+				successCounter: 4,
 				failCounter: 1,
 				history: [],
 				historyStep: 0
