@@ -10,5 +10,3 @@ const UserSchema = new mongoose.Schema({
 const User = mongoose.model('User', UserSchema)
 
 export default User
-
-export const publicAccountId = '627d1c813e0142f3977b1a40'

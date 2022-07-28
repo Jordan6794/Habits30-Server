@@ -7,7 +7,7 @@ export const signin = async (req, res) => {
 	try {
 		const existingUser = await User.findOne({ email })
 		if (!existingUser) {
-			return res.status(404).json({ message: 'No user with this username' })
+			return res.status(404).json({ message: 'No user with this email.' })
 		}
 
 		const isPasswordCorrect = await bcrypt.compare(
@@ -40,7 +40,7 @@ export const signup = async (req, res) => {
 		}
 
 		if (password !== repeatPassword) {
-			return res.status(400).json({ message: "Passwords don't match" })
+			return res.status(400).json({ message: "Passwords don't match." })
 		}
 
 		bcrypt.hash(password, 12, async function (err, hash) {
@@ -87,7 +87,7 @@ export const signup = async (req, res) => {
 			const token = jwt.sign(
 				{ email: result.email, username: result.username, id: result._id },
 				process.env.SECRET_KEY,
-				{ expiresIn: '10d' }
+				{ expiresIn: '100d' }
 			)
 			res.status(201).json({ result, token })
 		})

@@ -1,4 +1,4 @@
-import User, {publicAccountId} from '../models/user.js'
+import User from '../models/user.js'
 
 export const getHabbits = async (req, res) => {
 	try {
@@ -11,13 +11,7 @@ export const getHabbits = async (req, res) => {
 
 			res.status(200).json(habits)
 		} else {
-			const user = await User.findById(publicAccountId)
-			if (!user) {
-				return res.status(404).json({ message: 'Public Account not found' })
-			}
-			const habits = user.habits
-
-			res.status(200).json(habits)
+			return res.status(404).json({ message: 'No user provided' })
 		}
 	} catch (error) {
 		res.status(404).json({ message: error.message })
@@ -48,23 +42,7 @@ export const createHabbit = async (req, res) => {
 			res.status(201).json(updatedUser)
 
 		} else {
-			const user = await User.findById(publicAccountId)
-			if (!user) {
-				return res.status(404).json({ message: 'Public Account not found' })
-			}
-
-			const updatedUser = await User.findByIdAndUpdate(
-				publicAccountId,
-				{
-					$push: {
-						habits: habit,
-					},
-				},
-				{
-					new: true,
-				}
-			)
-			res.status(201).json(updatedUser)
+			res.status(409).json({message: 'no user provided'})
 		}
 	} catch (error) {
 		res.status(409).json({ message: error.message })
@@ -93,20 +71,7 @@ export const updateHabit = async (req, res) => {
 			)
 			res.json(updatedUser)
 		} else {
-			const user = await User.findById(publicAccountId)
-			if (!user) {
-				return res.status(404).json({ message: 'Public Account not found' })
-			}
-
-			const updatedUser = await User.findByIdAndUpdate(
-				publicAccountId,
-				{ $set: { 'habits.$[el]': habit } },
-				{
-					arrayFilters: [{ 'el._id': id }],
-					new: true,
-				}
-			)
-			res.json(updatedUser)
+			res.status(409).json({message: 'no user provided'})
 		}
 	} catch (error) {
 		res.status(409).json({ message: error.message })
@@ -129,16 +94,7 @@ export const deleteHabit = async (req, res) => {
 
 			res.json({ message: 'habit deleted succesfully' })
 		} else {
-			const user = await User.findById(publicAccountId)
-			if (!user) {
-				return res.status(404).json({ message: 'Public Account not found' })
-			}
-
-			await User.findByIdAndUpdate(publicAccountId, {
-				$pull: { habits: { _id: id } },
-			})
-
-			res.json({ message: 'habit deleted succesfully' })
+			res.status(409).json({message: 'no user provided'})
 		}
 	} catch (error) {
 		res.status(409).json({ message: error.message })
