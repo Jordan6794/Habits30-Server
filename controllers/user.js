@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import User from '../models/user.js'
 
+import { habitExample1, habitExample2, habitExample3 } from '../consts/consts.js'
+
 export const signin = async (req, res) => {
 	const { email, password } = req.body
 	try {
@@ -48,35 +50,6 @@ export const signup = async (req, res) => {
 				res.status(500).json({ message: 'something went wrong' })
 			}
 
-			const habitExample1 = {
-				_id: '6bf09b5e-d452-448b-b936-95c68a2fda9a',
-				name: 'Example 1 : Meditate 5 minutes',
-				colors: ['g', 'r', 'g'],
-				successCounter: 2,
-				failCounter: 1,
-				history: [],
-				historyStep: 0
-			}
-			const habitExample2 = {
-				_id: '6bf09b5e-d455-448b-b936-95c68a2fda9a',
-				name: 'Example 2 : Eat one fruit today',
-				colors: ['g', 'g', 'r', 'g', 'g'],
-				successCounter: 4,
-				failCounter: 1,
-				history: [],
-				historyStep: 0
-			}
-
-			const habitExample3 = {
-				_id: '6bf09b5e-d455-449b-b936-95c68a2fda9a',
-				name: 'Example 3 : Read 15 minutes',
-				colors: ['g'],
-				successCounter: 1,
-				failCounter: 0,
-				history: [],
-				historyStep: 0
-			}
-
 			const result = await User.create({
 				email,
 				username,
@@ -87,11 +60,49 @@ export const signup = async (req, res) => {
 			const token = jwt.sign(
 				{ email: result.email, username: result.username, id: result._id },
 				process.env.SECRET_KEY,
-				{ expiresIn: '100d' }
+				{ expiresIn: '10d' }
 			)
 			res.status(201).json({ result, token })
 		})
 	} catch (error) {
 		res.status(500).json({ message: 'something went wrong' })
 	}
+}
+
+
+export const googleauth = async (req, res) => {
+	const { email, given_name, sub } = req.body
+
+	try {
+		const existingUser = await User.findOne({ email })
+
+		// If user exists we log him in, if not we create a new account
+		if (existingUser) {
+			const token = jwt.sign(
+				{ email: existingUser.email ,username: existingUser.username, id: existingUser._id },
+				process.env.SECRET_KEY,
+				{ expiresIn: '10d' }
+			)
+	
+			res.status(200).json({ result: existingUser, token })
+		} else {
+			const result = await User.create({
+				email,
+				username: given_name,
+				habits: [habitExample1, habitExample2, habitExample3],
+			})
+	
+			const token = jwt.sign(
+				{ email: result.email, username: result.username, id: result._id },
+				process.env.SECRET_KEY,
+				{ expiresIn: '10d' }
+			)
+			res.status(201).json({ result, token })
+		}
+
+
+	} catch (error) {
+		res.status(500).json({ message: 'something went wrong' })
+	}
+
 }
