@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import User from '../models/user.js'
 
 import { habitExample1, habitExample2, habitExample3 } from '../consts/consts.js'
+import { signinTokenExpiresIn, loginTokenExpiresIn } from '../consts/consts.js'
 
 export const signin = async (req, res) => {
 	const { email, password } = req.body
@@ -23,7 +24,7 @@ export const signin = async (req, res) => {
 		const token = jwt.sign(
 			{ email: existingUser.email ,username: existingUser.username, id: existingUser._id },
 			process.env.SECRET_KEY,
-			{ expiresIn: '10d' }
+			{ expiresIn: loginTokenExpiresIn }
 		)
 
 		res.status(200).json({ result: existingUser, token })
@@ -60,7 +61,7 @@ export const signup = async (req, res) => {
 			const token = jwt.sign(
 				{ email: result.email, username: result.username, id: result._id },
 				process.env.SECRET_KEY,
-				{ expiresIn: '10d' }
+				{ expiresIn: signinTokenExpiresIn }
 			)
 			res.status(201).json({ result, token })
 		})
@@ -81,7 +82,7 @@ export const googleauth = async (req, res) => {
 			const token = jwt.sign(
 				{ email: existingUser.email ,username: existingUser.username, id: existingUser._id },
 				process.env.SECRET_KEY,
-				{ expiresIn: '10d' }
+				{ expiresIn: loginTokenExpiresIn }
 			)
 	
 			res.status(200).json({ result: existingUser, token })
@@ -95,7 +96,7 @@ export const googleauth = async (req, res) => {
 			const token = jwt.sign(
 				{ email: result.email, username: result.username, id: result._id },
 				process.env.SECRET_KEY,
-				{ expiresIn: '10d' }
+				{ expiresIn: signinTokenExpiresIn }
 			)
 			res.status(201).json({ result, token })
 		}

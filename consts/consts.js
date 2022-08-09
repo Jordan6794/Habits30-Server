@@ -1,3 +1,6 @@
+export const signinTokenExpiresIn = '5d'
+export const loginTokenExpiresIn = '100d'
+
 export const habitExample1 = {
     _id: '6bf09b5e-d452-448b-b936-95c68a2fda9a',
     name: 'Example 1 : Meditate 5 minutes',
