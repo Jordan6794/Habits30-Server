@@ -109,3 +109,31 @@ export const googleauth = async (req, res) => {
 	}
 
 }
+
+
+export const onboard = async (req, res) => {
+	try {
+		if(!req.userId){
+			return res.status(404).json({ message: 'User ID not provided' })
+		}
+		const user = await User.findById(req.userId)
+			if (!user) {
+				return res.status(404).json({ message: 'User not found' })
+			}
+
+		const updatedUser = await User.findByIdAndUpdate(
+			req.userId,
+			{
+				hasOnboarded: true
+			},
+			{
+				new: true,
+			}
+		)
+
+		res.status(201).json(updatedUser)
+		
+	} catch (error) {
+		res.status(500).json({ message: 'something went wrong' })
+	}
+}

@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from 'dotenv'
 
-import postRoutes from './routes/posts.js'
+import habitsRoutes from './routes/habits.js'
 import userRoutes from './routes/user.js'
 
 const app = express()
@@ -14,7 +14,7 @@ app.use(bodyParser.json({extended: true}))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors())
 
-app.use('/posts', postRoutes)
+app.use('/posts', habitsRoutes)
 app.use('/user', userRoutes)
 
 app.get('/', (req, res) => {

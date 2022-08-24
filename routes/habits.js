@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { getHabbits, createHabbit, deleteHabit, updateHabit } from '../controllers/posts.js'
+import { getHabbits, createHabbit, deleteHabit, updateHabit } from '../controllers/habits.js'
 import { addEmbordingField } from '../controllers/scripts.js'
 import auth from '../middleware/auth.js'
 

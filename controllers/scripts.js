@@ -1,4 +1,4 @@
-import Habit from "../models/postHabit.js"
+import Habit from "../models/habits.js"
 import User from '../models/user.js'
 
 export const habitScript = async (req, res) => {
