@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema({
     email: String,
     password: {type: String, required: false},
     habits: Array,
+    hasOnboarded: Boolean
 })
 
 const User = mongoose.model('User', UserSchema)

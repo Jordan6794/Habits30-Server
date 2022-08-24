@@ -69,7 +69,26 @@ export const addLifetimeStatsScript = async (req, res) => {
         })
     })
 
+    res.status(200).json('good')
+}
+
+export const addEmbordingField = async (req, res) => {
+    const allUsers = await User.find({})
+    // const myId = '62f2401525e8f92efc54065a'
     
+    allUsers.forEach(async (user) => {
+        const id = user._id
+        await User.findByIdAndUpdate(
+            id,
+            {
+                hasOnboarded: true
+            },
+            {
+                new: true,
+            }
+        )
+        
+    })
 
     res.status(200).json('good')
 }

@@ -56,6 +56,7 @@ export const signup = async (req, res) => {
 				username,
 				password: hash,
 				habits: [habitExample1, habitExample2, habitExample3],
+				hasOnboarded: false,
 			})
 
 			const token = jwt.sign(
@@ -91,6 +92,7 @@ export const googleauth = async (req, res) => {
 				email,
 				username: given_name,
 				habits: [habitExample1, habitExample2, habitExample3],
+				hasOnboarded: false,
 			})
 	
 			const token = jwt.sign(
