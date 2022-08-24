@@ -6,6 +6,8 @@ const habitSchema = new mongoose.Schema({
 	colors: { type: Array, required: true },
 	successCounter: { type: Number, required: true },
 	failCounter: { type: Number, required: true },
+	lifetimeSuccessCounter: { type: Number, required: true },
+	lifetimeFailCounter: { type: Number, required: true },
 	history: { type: Array, required: true },
 	historyStep: {type: Number, required: true}
 })

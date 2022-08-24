@@ -7,6 +7,8 @@ export const habitExample1 = {
     colors: ['g', 'r', 'g'],
     successCounter: 2,
     failCounter: 1,
+    lifetimeSuccessCounter: 2,
+    lifetimeFailCounter: 1,
     history: [],
     historyStep: 0
 }
@@ -16,6 +18,8 @@ export const habitExample2 = {
     colors: ['g', 'g', 'r', 'g', 'g'],
     successCounter: 4,
     failCounter: 1,
+    lifetimeSuccessCounter: 4,
+    lifetimeFailCounter: 1,
     history: [],
     historyStep: 0
 }
@@ -26,6 +30,8 @@ export const habitExample3 = {
     colors: ['g'],
     successCounter: 1,
     failCounter: 0,
+    lifetimeSuccessCounter: 1,
+    lifetimeFailCounter: 0,
     history: [],
     historyStep: 0
 }

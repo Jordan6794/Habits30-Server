@@ -41,3 +41,35 @@ export const switchHabitsScript = async (req, res) => {
 
     res.status(200).json('good')
 }
+
+export const addLifetimeStatsScript = async (req, res) => {
+    const allUsers = await User.find({})
+
+    allUsers.forEach(async (user) => {
+        const habits = user.habits
+        const id = user._id
+
+        habits.forEach(async (habit) => {
+            const habitId = habit._id
+            const successCount = habit.successCounter
+            const failCount = habit.failCounter
+    
+            const lifetimeSuccessCounter = successCount
+            const lifetimeFailCounter = failCount
+            const newHabit = {...habit, lifetimeSuccessCounter, lifetimeFailCounter}
+             
+            const updatedUser = await User.findByIdAndUpdate(
+                id,
+                { $set: { 'habits.$[el]': newHabit } },
+                {
+                    arrayFilters: [{ 'el._id': habitId }],
+                    new: true,
+                }
+            )
+        })
+    })
+
+    
+
+    res.status(200).json('good')
+}
