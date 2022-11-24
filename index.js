@@ -28,4 +28,4 @@ mongoose.connect(process.env.CONNECTION_URL, {useNewUrlParser: true, useUnifiedT
     .catch((error) => console.log(error.message))
 
 // Export the Express API
-module.exports = app;
+export default app;
