@@ -6,6 +6,7 @@ const habitSchema = new mongoose.Schema({
 	createdOn: { type: String, required: true }, // 'YYYY-MM-DD'
 	startDate: { type: String, required: true }, // 'YYYY-MM-DD', moved to the clear day on clear
 	log: { type: Object, default: {} }, // { 'YYYY-MM-DD': 'success' | 'fail' }
+	deletedOn: { type: String }, // 'YYYY-MM-DD', soft delete : hidden but still counted in the stats
 })
 
 const Habit = mongoose.model('Habit', habitSchema)

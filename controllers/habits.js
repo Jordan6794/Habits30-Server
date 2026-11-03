@@ -1,12 +1,12 @@
 import User from '../models/user.js'
-import { DATE_KEY_REGEX, getEditableWindow, isEditableDate } from '../utils/dates.js'
+import { DATE_KEY_REGEX, getEditableWindow, isEditableDate, toUTCDateKey } from '../utils/dates.js'
 
 const DAY_STATUSES = ['success', 'fail']
 
 // Only the stored fields are saved, colors and counters are computed by the client from the log
 function toStoredHabit(habit) {
-	const { name, _id, createdOn, startDate, log } = habit
-	return { name, _id, createdOn, startDate, log: log ?? {} }
+	const { name, _id, createdOn, startDate, log, deletedOn } = habit
+	return { name, _id, createdOn, startDate, log: log ?? {}, ...(deletedOn && { deletedOn }) }
 }
 
 // Returns true if the new log changes a day that is not editable anymore
@@ -141,9 +141,14 @@ export const deleteHabit = async (req, res) => {
 				return res.status(404).json({ message: 'User not found' })
 			}
 
-			await User.findByIdAndUpdate(req.userId, {
-				$pull: { habits: { _id: id } },
-			})
+			// soft delete : the habit is hidden but its logs still count in the stats
+			const { date } = req.query
+			const deletedOn = isEditableDate(date) ? date : toUTCDateKey(new Date())
+			await User.findByIdAndUpdate(
+				req.userId,
+				{ $set: { 'habits.$[el].deletedOn': deletedOn } },
+				{ arrayFilters: [{ 'el._id': id }] }
+			)
 
 			res.json({ message: 'habit deleted succesfully' })
 		} else {
