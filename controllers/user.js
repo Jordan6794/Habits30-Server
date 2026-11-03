@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import User from '../models/user.js'
 
-import { habitExample1, habitExample2, habitExample3 } from '../consts/consts.js'
+import { makeHabitExamples } from '../consts/consts.js'
 import { signinTokenExpiresIn, loginTokenExpiresIn } from '../consts/consts.js'
 
 export const signin = async (req, res) => {
@@ -55,7 +55,7 @@ export const signup = async (req, res) => {
 				email,
 				username,
 				password: hash,
-				habits: [habitExample1, habitExample2, habitExample3],
+				habits: makeHabitExamples(),
 				hasOnboarded: false,
 			})
 
@@ -91,7 +91,7 @@ export const googleauth = async (req, res) => {
 			const result = await User.create({
 				email,
 				username: given_name,
-				habits: [habitExample1, habitExample2, habitExample3],
+				habits: makeHabitExamples(),
 				hasOnboarded: false,
 			})
 	

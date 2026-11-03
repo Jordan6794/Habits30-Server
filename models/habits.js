@@ -3,13 +3,9 @@ import mongoose from 'mongoose'
 const habitSchema = new mongoose.Schema({
 	name: { type: String, required: true },
 	_id: { type: String, required: true },
-	colors: { type: Array, required: true },
-	successCounter: { type: Number, required: true },
-	failCounter: { type: Number, required: true },
-	lifetimeSuccessCounter: { type: Number, required: true },
-	lifetimeFailCounter: { type: Number, required: true },
-	history: { type: Array, required: true },
-	historyStep: {type: Number, required: true}
+	createdOn: { type: String, required: true }, // 'YYYY-MM-DD'
+	startDate: { type: String, required: true }, // 'YYYY-MM-DD', moved to the clear day on clear
+	log: { type: Object, default: {} }, // { 'YYYY-MM-DD': 'success' | 'fail' }
 })
 
 const Habit = mongoose.model('Habit', habitSchema)
