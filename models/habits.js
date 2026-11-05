@@ -7,6 +7,7 @@ const habitSchema = new mongoose.Schema({
 	startDate: { type: String, required: true }, // 'YYYY-MM-DD', moved to the clear day on clear
 	log: { type: Object, default: {} }, // { 'YYYY-MM-DD': 'success' | 'fail' }
 	deletedOn: { type: String }, // 'YYYY-MM-DD', soft delete : hidden but still counted in the stats
+	isFavorite: { type: Boolean }, // only stored when true, a missing field means not favorite
 })
 
 const Habit = mongoose.model('Habit', habitSchema)

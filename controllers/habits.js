@@ -4,9 +4,18 @@ import { DATE_KEY_REGEX, getEditableWindow, isEditableDate, toUTCDateKey } from 
 const DAY_STATUSES = ['success', 'fail']
 
 // Only the stored fields are saved, colors and counters are computed by the client from the log
+// isFavorite is only kept when true, so old habits without the field and unfavorited ones look the same
 function toStoredHabit(habit) {
-	const { name, _id, createdOn, startDate, log, deletedOn } = habit
-	return { name, _id, createdOn, startDate, log: log ?? {}, ...(deletedOn && { deletedOn }) }
+	const { name, _id, createdOn, startDate, log, deletedOn, isFavorite } = habit
+	return {
+		name,
+		_id,
+		createdOn,
+		startDate,
+		log: log ?? {},
+		...(deletedOn && { deletedOn }),
+		...(isFavorite === true && { isFavorite: true }),
+	}
 }
 
 // Returns true if the new log changes a day that is not editable anymore
@@ -118,6 +127,34 @@ export const setLogEntry = async (req, res) => {
 
 		const logPath = `habits.$[el].log.${date}`
 		const update = status === null ? { $unset: { [logPath]: '' } } : { $set: { [logPath]: status } }
+		const updatedUser = await User.findByIdAndUpdate(req.userId, update, {
+			arrayFilters: [{ 'el._id': id }],
+			new: true,
+		})
+		if (!updatedUser) {
+			return res.status(404).json({ message: 'User not found' })
+		}
+		res.json(updatedUser)
+	} catch (error) {
+		res.status(409).json({ message: error.message })
+	}
+}
+
+// Only touches isFavorite, so it can't overwrite the log with a stale copy
+export const setFavorite = async (req, res) => {
+	try {
+		const { isFavorite } = req.body
+		const { id } = req.params
+
+		if (!req.userId) {
+			return res.status(409).json({ message: 'no user provided' })
+		}
+		if (typeof isFavorite !== 'boolean') {
+			return res.status(400).json({ message: 'isFavorite must be a boolean' })
+		}
+
+		const favoritePath = 'habits.$[el].isFavorite'
+		const update = isFavorite ? { $set: { [favoritePath]: true } } : { $unset: { [favoritePath]: '' } }
 		const updatedUser = await User.findByIdAndUpdate(req.userId, update, {
 			arrayFilters: [{ 'el._id': id }],
 			new: true,
